@@ -1,1 +1,151 @@
 @import "tailwindcss";
+
+@theme {
+  --font-sans: "Instrument Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Bricolage Grotesque", "Instrument Sans", sans-serif;
+
+  --color-paper: #f4f2ec;
+  --color-card: #ffffff;
+  --color-ink: #12203a;
+  --color-mute: #5d6b80;
+  --color-line: #e3dfd3;
+
+  --color-navy-950: #081527;
+  --color-navy-900: #0c2242;
+  --color-navy-800: #123059;
+  --color-navy-700: #1b4276;
+  --color-navy-600: #27579c;
+  --color-navy-100: #dde6f2;
+
+  --color-em-700: #0b6b50;
+  --color-em-600: #0e8563;
+  --color-em-500: #17a97c;
+  --color-em-200: #b8e4d3;
+  --color-em-100: #d9f0e6;
+  --color-em-50: #ecf7f1;
+
+  --color-gold-600: #c98a1f;
+  --color-gold-500: #e9b44c;
+  --color-gold-100: #f8e9c8;
+
+  --color-danger-600: #bb4a3c;
+  --color-danger-100: #f8e2dd;
+  --color-warn-600: #a86f16;
+  --color-warn-100: #f5ead0;
+}
+
+.dark {
+  --color-paper: #0a1424;
+  --color-card: #101d33;
+  --color-ink: #e7edf6;
+  --color-mute: #8fa0b6;
+  --color-line: #223450;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: clip;
+}
+
+::selection {
+  background: var(--color-em-200);
+  color: var(--color-navy-900);
+}
+
+*:focus-visible {
+  outline: 2px solid var(--color-em-500);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: color-mix(in oklab, var(--color-mute) 35%, transparent); border-radius: 8px; border: 2px solid var(--color-paper); }
+
+.font-display { font-family: var(--font-display); }
+.tnum { font-variant-numeric: tabular-nums; }
+
+/* ---------- motion ---------- */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes popIn {
+  0% { opacity: 0; transform: scale(0.94) translateY(8px); }
+  100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+@keyframes tickerMove {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+@keyframes pulseDot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.45; transform: scale(0.8); }
+}
+@keyframes floatY {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+@keyframes shimmer {
+  from { background-position: 200% 0; }
+  to { background-position: -200% 0; }
+}
+
+.anim-fade-up { animation: fadeUp 0.55s cubic-bezier(0.22, 1, 0.36, 1) both; }
+.anim-fade-in { animation: fadeIn 0.3s ease both; }
+.anim-pop { animation: popIn 0.28s cubic-bezier(0.22, 1, 0.36, 1) both; }
+.anim-float { animation: floatY 5s ease-in-out infinite; }
+.pulse-dot { animation: pulseDot 1.8s ease-in-out infinite; }
+
+.ticker-track {
+  display: flex;
+  width: max-content;
+  animation: tickerMove 38s linear infinite;
+}
+.ticker-track:hover { animation-play-state: paused; }
+
+.rv { opacity: 0; transform: translateY(18px); transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1), transform 0.7s cubic-bezier(0.22, 1, 0.36, 1); }
+.rv.rv-in { opacity: 1; transform: translateY(0); }
+
+.skeleton {
+  background: linear-gradient(90deg, color-mix(in oklab, var(--color-line) 60%, transparent) 25%, color-mix(in oklab, var(--color-line) 20%, transparent) 50%, color-mix(in oklab, var(--color-line) 60%, transparent) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s linear infinite;
+}
+
+/* subtle paper grain for light surfaces */
+.paper-grid {
+  background-image: linear-gradient(color-mix(in oklab, var(--color-ink) 4%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in oklab, var(--color-ink) 4%, transparent) 1px, transparent 1px);
+  background-size: 44px 44px;
+}
+
+/* ---------- print (report cards / receipts) ---------- */
+@media print {
+  body * { visibility: hidden !important; }
+  .print-sheet, .print-sheet * { visibility: visible !important; }
+  .print-sheet {
+    position: fixed !important;
+    inset: 0 !important;
+    overflow: visible !important;
+    max-height: none !important;
+    background: #fff !important;
+    color: #101d33 !important;
+    box-shadow: none !important;
+    border: none !important;
+    border-radius: 0 !important;
+    padding: 24px !important;
+  }
+}
